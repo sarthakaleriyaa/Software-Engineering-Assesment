@@ -1,0 +1,4 @@
+# Never convert line endings in binary files (some generated PDFs are pure ASCII,
+# so Git would otherwise treat them as text and rewrite them on Windows checkouts).
+*.pdf binary
+*.dump binary
