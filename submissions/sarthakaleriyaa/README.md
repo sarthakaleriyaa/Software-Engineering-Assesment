@@ -501,7 +501,7 @@ See [`EVALUATION.md`](EVALUATION.md) for the dataset, metrics, experiment detail
 | B1–B3 — Retrieval, grounding, refusal and prompt-injection defences | Core logic tested with local provider and mocked LLM; full live Gemini quality and injection evaluation pending |
 | B4 — Evaluation dataset, script, experiment and documentation | Completed for the local provider; scripted Gemini evaluation pending |
 | C1 — Dockerfile and Docker Compose | Implemented; previously verified on a clean volume |
-| C2 — GitHub Actions CI workflow | Passing on GitHub ([run 41010392777](https://github.com/sarthakaleriyaa/Software-Engineering-Assesment/actions/runs/41010392777), commit `68b4bef`): lint, 140 tests, evaluation, Docker build |
+| C2 — GitHub Actions CI workflow | Passing on GitHub ([run 41012013155](https://github.com/sarthakaleriyaa/Software-Engineering-Assesment/actions/runs/41012013155), commit `ed79b66`): lint, 140 tests, evaluation, Docker build |
 | C3 — Public deployment | Not done |
 | D2 — GitHub issues and pull requests | Not done |
 | D4 — `v1.0.0` tag and release | Not done |
