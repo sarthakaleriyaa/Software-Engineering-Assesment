@@ -1,40 +1,83 @@
 # DocuMind — AI Knowledge Assistant
 
-| | |
+> An AI-powered knowledge assistant that lets users upload documents and ask questions in natural language. Answers are grounded in uploaded content and include source citations.
+
+## Project Links
+
+| Resource | Link |
 |---|---|
-| **Live link** | Not deployed yet. Add the HTTPS URL after deployment. |
-| **Demo video** | Not recorded yet. Add the Google Drive link after recording. |
-| **Resume** | [`RESUME.pdf`](RESUME.pdf) |
-| **Documentation** | [`DESIGN.md`](DESIGN.md) · [`EVALUATION.md`](EVALUATION.md) · [`AI_USAGE.md`](AI_USAGE.md) · [`FINAL_AUDIT.md`](FINAL_AUDIT.md) |
+| **Live Application** | [https://documind-1m6x.onrender.com](https://documind-1m6x.onrender.com) |
+| **Health Check** | [Application Health](https://documind-1m6x.onrender.com/health) |
+| **API Documentation** | [Interactive API Docs](https://documind-1m6x.onrender.com/docs) |
+| **Demo Video** | [Watch DocuMind Demo](https://drive.google.com/file/d/1lZeC6rXnXwva5-NytKbu076ncotWsdxr/view?usp=sharing) |
+| **GitHub Repository** | [Software-Engineering-Assessment](https://github.com/sarthakaleriyaa/Software-Engineering-Assessment) |
+| **Implementation Branch** | [feature/project-architecture](https://github.com/sarthakaleriyaa/Software-Engineering-Assessment/tree/feature/project-architecture) |
+| **Commit History** | [View Commits](https://github.com/sarthakaleriyaa/Software-Engineering-Assessment/commits/feature/project-architecture/) |
+| **Resume** | [RESUME.pdf](RESUME.pdf) |
 
-## Test Credentials
+## Implementation and Deployment Details
 
-Not available yet. After deployment, create a reviewer account and upload the sample files from `evaluation/documents/`.
+| Item | Details |
+|---|---|
+| Repository owner | `sarthakaleriyaa` |
+| Default branch | `main` |
+| Implementation branch | `feature/project-architecture` |
+| Deployment branch | `feature/project-architecture` |
+| Latest verified commit | `5814dca` |
+| Total commits on implementation branch | 17 |
+| Hosting platform | Render |
+| Deployment service | `documind` |
+| Database | Render PostgreSQL |
+| CI workflow | GitHub Actions |
 
-Add reviewer credentials here only if the deployment and assessment rules permit sharing them. Never commit private credentials or API keys.
+The implementation branch contains the project implementation and is deployed to the public Render URL.
+
+## CI / GitHub Actions
+
+The project uses GitHub Actions to run automated checks when changes are pushed.
+
+**Latest verified workflow run:**
+
+- Workflow: `sarthakaleriyaa-ci`
+- Run number: `#4`
+- Run ID: `41013752272`
+- Commit: `5814dca`
+- Branch: `feature/project-architecture`
+- Trigger: Push
+- Status: **Success**
+- Duration: 53 seconds
+
+| Job | Result |
+|---|---|
+| `lint-and-test` | Passed |
+| `docker` | Passed |
+
+[View Successful GitHub Actions Run](https://github.com/sarthakaleriyaa/Software-Engineering-Assessment/actions/runs/41013752272)
 
 ## Project Status
 
-The project has been tested locally, including automated tests and Docker Compose checks.
+- Core application implemented.
+- Docker-based local setup implemented.
+- Automated CI workflow successfully executed on GitHub.
+- Public HTTPS deployment completed.
+- PDF and TXT upload tested on the deployed application.
+- Question-answering flow tested on the deployed application.
+- Demo video recorded and shared.
 
-The following submission items are still pending:
+**Remaining submission items:**
 
-- Public HTTPS deployment
-- Successful GitHub Actions workflow run
-- Demo video and deployment screenshots
-- Reviewer test credentials
-- Full scripted Gemini evaluation
-- GitHub issues, pull requests and `v1.0.0` release
-
-A small number of manual Gemini checks have succeeded, but some generation requests have timed out. These spot checks should not be treated as a completed live-provider evaluation.
+- GitHub issues and pull requests.
+- `v1.0.0` GitHub release and tag.
+- Full scripted evaluation using the live Gemini provider.
+- Additional deployment screenshots.
 
 ## What It Does
 
-DocuMind is an AI-powered knowledge assistant that allows users to upload PDF, plain-text and Markdown documents and ask questions in natural language.
+DocuMind is an AI-powered knowledge assistant that allows authenticated users to upload PDF, plain-text and Markdown documents and ask questions in natural language.
 
 Answers are grounded in uploaded documents, include source citations and page references where available, and clearly state:
 
-> I couldn't find this in your documents.
+> "I couldn't find this in your documents."
 
 ### Key Features
 
@@ -42,7 +85,7 @@ Answers are grounded in uploaded documents, include source citations and page re
 - **Document Upload:** Upload PDF, TXT and Markdown files.
 - **Background Processing:** A separate worker processes documents asynchronously.
 - **Processing Status:** Documents move through `queued`, `processing`, `ready` or `failed` states.
-- **Document Selection:** Ask questions across all your documents or select specific documents.
+- **Document Selection:** Ask questions across all uploaded documents or select specific documents.
 - **Retrieval-Augmented Generation (RAG):** Retrieve relevant document passages using vector similarity search.
 - **Source Citations:** Answers include source document, passage and page information where available.
 - **Usage Information:** Track token usage, latency and estimated cost.
@@ -52,177 +95,106 @@ Answers are grounded in uploaded documents, include source citations and page re
 - **Health Monitoring:** `/health` reports application dependencies and worker status.
 - **API Documentation:** Interactive OpenAPI documentation is available at `/docs`.
 
-The web interface is served by FastAPI at `/`. It is a dark, responsive single-page app built from plain JavaScript modules and CSS, with no build step and no third-party frontend dependencies:
+## Web Interface
 
-- **Sign in / create account** with field validation, a password visibility toggle, password confirmation and the backend's own error messages (for example, an existing email).
-- **Live system status** in the header, taken from `/health`. It shows "All systems operational" only when the server reports every dependency as healthy.
-- **Knowledge base:** drag-and-drop or click to upload (type and 10 MB checks before upload), per-file upload progress, live processing status (queued, processing, ready, failed with the reason), page count, size and upload time, select one or all ready documents, refresh, and delete with confirmation.
-- **Grounded Q&A console:** chat-style thread, suggested starter questions, a clear scope indicator (all ready documents or the selected ones), and three distinct outcomes: a cited answer, "Not found in your documents", or an error with a retry button. Citations show the document, the page (or passage) and the exact source text.
-- **History** of past questions with status and usage.
+The web interface is served by FastAPI at `/`. It is a responsive single-page application built using plain JavaScript modules and CSS, with no frontend build step or third-party frontend dependencies.
 
-The page is served with a strict Content-Security-Policy (scripts and styles only from the same origin, no inline code).
+The interface includes:
 
-## Project Structure
-
-```text
-sarthakaleriyaa/
-│
-├── backend/
-│   ├── app/
-│   │   ├── static/
-│   │   │   ├── index.html        # app shell and icon sprite
-│   │   │   ├── css/app.css       # design tokens and components
-│   │   │   └── js/
-│   │   │       ├── api.js        # the only module that calls the API
-│   │   │       ├── ui-logic.js   # pure rules: validation, formatting, status/health mapping
-│   │   │       └── app.js        # views and interactions
-│   │   ├── worker.py
-│   │   └── ...
-│   │
-│   ├── migrations/               # Alembic migrations 0001–0004
-│   ├── scripts/e2e_check.py      # end-to-end check against any running deployment
-│   ├── tests/                    # pytest suites; tests/js holds the frontend unit tests
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   ├── requirements-dev.txt
-│   └── ...
-│
-├── evaluation/
-│   ├── documents/
-│   ├── run_eval.py
-│   └── ...
-│
-├── docs/
-│   └── SUBMISSION_CHECKLIST.md
-│
-├── .env.example
-├── docker-compose.yml
-├── render.yaml                  # Render Blueprint (free plan)
-├── README.md
-├── DESIGN.md
-├── EVALUATION.md
-├── AI_USAGE.md
-└── FINAL_AUDIT.md
-```
+1. Sign in and account registration with validation.
+2. Live system status based on the `/health` endpoint.
+3. Knowledge base with drag-and-drop document uploads.
+4. Upload progress and document processing status.
+5. Document selection, refresh and deletion.
+6. Grounded Q&A console with cited answers.
+7. Clear outcomes for answers, missing information and errors.
+8. Question history with usage information.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    B[Browser: UI at /] --> API[FastAPI API]
-
-    API -->|Document row: queued + file bytes| PG[(PostgreSQL + pgvector)]
-
-    W[Background Worker] -->|Claim using SKIP LOCKED, read file bytes| PG
-    W -->|Generate embeddings| AI[Gemini or Offline Local Provider]
-
-    API -->|Question embedding and answer| AI
-    API -->|Owner-filtered cosine search| PG
+    B[Browser UI] --> API[FastAPI API]
+    API --> PG[(PostgreSQL + pgvector)]
+    API --> V[(Uploads Volume)]
+    W[Background Worker] --> PG
+    W --> V
+    W --> AI[Gemini or Local Provider]
+    API --> AI
+    PG --> R[Vector Retrieval]
+    R --> API
 ```
 
-### Main Components
+The application consists of four Docker Compose services:
 
-| Component | Responsibility |
-|---|---|
-| FastAPI | Authentication, APIs, document management and question answering |
-| PostgreSQL | Users, documents, chunks, question history and worker queue |
-| pgvector | Store embeddings and perform vector similarity search |
-| Background Worker | Extract text, create chunks and generate embeddings |
-| Gemini | Hosted embedding and answer generation |
-| Local Provider | Offline embeddings and extractive answers for testing |
-| Alembic | Database schema migrations |
-| Web UI (`app/static`) | Plain JavaScript modules and CSS served by FastAPI; talks only to this API |
+- `db` — PostgreSQL 17 with pgvector.
+- `migrate` — Alembic database migrations.
+- `api` — FastAPI backend and web interface.
+- `worker` — Background document-processing worker.
 
-The Docker Compose environment contains four services:
+The `documents` table also acts as the background job queue. PostgreSQL row locking with `FOR UPDATE SKIP LOCKED` is used to safely claim jobs without requiring a separate message broker.
 
-1. `db` — PostgreSQL 17 with pgvector.
-2. `migrate` — Runs Alembic database migrations.
-3. `api` — FastAPI application and web interface.
-4. `worker` — Background document-processing process.
-
-Uploaded files are stored in PostgreSQL (`document_blobs`) in the same transaction that queues the document, so they survive restarts and redeploys and any worker can read them. The `documents` table also acts as the job queue. Workers claim jobs using PostgreSQL `FOR UPDATE SKIP LOCKED`, so a separate Redis or Celery service is not required.
-
-See [`DESIGN.md`](DESIGN.md) for the detailed architecture, API contract, data model and design decisions.
+See [DESIGN.md](DESIGN.md) for the complete architecture, API contract, data model and technical trade-offs.
 
 ## How a Question Is Answered
 
-1. The user sends a question to `POST /chat` with a valid JWT bearer token.
+1. The client sends `POST /chat` with a bearer token.
 2. The API verifies the JWT and loads the authenticated user.
-3. **Rate limiting:** If the user has already submitted 10 or more questions in the last 60 seconds, the API returns HTTP 429 with `Retry-After`.
-4. The question is saved in history with `pending` status. Every attempt counts towards the rate limit.
-5. If `document_ids` are supplied, the API verifies that every selected document belongs to the user and is ready. Otherwise, it returns 404.
-6. The question is converted into an embedding using the `RETRIEVAL_QUERY` task type with 768 dimensions.
-7. The API retrieves the user's own ready document chunks using exact pgvector cosine-distance ranking. The top 5 results are selected and then checked against a distance threshold.
-8. If no chunk passes the retrieval threshold, the API returns a fixed refusal without calling the LLM.
-9. Otherwise, the system builds a grounded prompt. System instructions are kept separate from retrieved passages, which are marked as untrusted source data.
-10. The LLM generates an answer with citations such as `[S1]` or `[S1, S3]`.
-11. The application normalises refusals, checks for prompt leakage and injected instructions, and redacts credentials.
-12. Only the sources cited by the final answer are returned, together with usage information and latency.
-13. The question history is updated with `answered`, `refused` or `error` status.
+3. The per-user rate limit is checked. Ten or more questions in the last 60 seconds result in HTTP 429 with `Retry-After`.
+4. The question is saved in history with a pending status.
+5. If specific document IDs are supplied, the API verifies that they belong to the user and are ready.
+6. The question is embedded using the configured 768-dimensional retrieval embedding.
+7. Relevant chunks are retrieved from the user's ready documents using cosine similarity.
+8. The top five relevant chunks are checked against a maximum-distance threshold.
+9. If no chunk passes the threshold, the system returns the fixed refusal without calling the LLM.
+10. Otherwise, retrieved passages are passed to the LLM as untrusted source content.
+11. The LLM generates a grounded answer with source references such as `[S1]` or `[S1, S3]`.
+12. The API returns the answer, citations, usage information, latency and estimated cost, and updates question history.
 
-Provider failures return a generic HTTP 503 response. A provider quota error receives a separate usage-limit response with `Retry-After`. HTTP 504 errors are not retried; only selected transient failures are eligible for retries.
-
-Provider error bodies are never logged or returned to users.
+Provider failures are handled with appropriate error responses. Provider error bodies and credentials are not exposed in API responses or logs.
 
 ## Technology Stack
 
-| Technology | Purpose |
+| Component | Technology |
 |---|---|
-| **Python** | Backend development |
-| **FastAPI** | REST API and request validation |
-| **PostgreSQL** | Relational database |
-| **pgvector** | Vector storage and similarity search |
-| **Gemini** | Embedding generation and AI answers |
-| **Alembic** | Database migrations |
-| **pypdf** | PDF text extraction |
-| **HTML, CSS and JavaScript** | Frontend interface |
-| **pytest** | Automated testing |
-| **Ruff** | Python linting |
-| **Docker Compose** | Local service orchestration |
-| **GitHub Actions** | CI workflow |
+| Backend API | Python, FastAPI |
+| Database | PostgreSQL 17 |
+| Vector Search | pgvector |
+| ORM | SQLAlchemy |
+| Migrations | Alembic |
+| Authentication | JWT, Argon2 |
+| LLM Provider | Google Gemini |
+| Generation Model | `gemini-3.5-flash-lite` |
+| Embedding Model | `gemini-embedding-001` |
+| Embedding Dimensions | 768 |
+| PDF Extraction | pypdf |
+| Background Processing | Python worker with PostgreSQL queue |
+| Frontend | HTML, CSS, JavaScript |
+| Containerization | Docker, Docker Compose |
+| Testing | pytest |
+| Linting | Ruff |
+| CI/CD | GitHub Actions |
+| Deployment | Render |
 
-### AI Providers
-
-**Gemini provider**
-
-- Generation model: `gemini-3.5-flash-lite`
-- Embedding model: `gemini-embedding-001`
-- Embedding dimensions: 768
-
-Gemini provides hosted embedding and answer generation. Live latency and availability depend on provider limits and service availability.
-
-**Offline local provider**
-
-The `local` provider uses hashed bag-of-words embeddings and an extractive answerer. It makes no external network calls and allows local development, automated testing and evaluation without API keys or usage costs.
-
-It is a lexical baseline, not a replacement for semantic retrieval or production-quality LLM answers.
-
-**Privacy note:** When `AI_PROVIDER=gemini` is enabled, document text and questions are sent to Google's service for processing.
+An offline `local` provider is also available for tests and evaluation without external API calls.
 
 ## Local Setup
 
 ### Requirements
 
 - Python 3.12+
-- Docker Desktop (Windows/macOS) or Docker Engine with Compose v2 (Linux/WSL)
+- Docker Desktop or Docker Engine
+- Docker Compose v2
 - Git
-- Optional: Node.js for the UI behaviour test
-- Gemini API key only when using the hosted Gemini provider
 
-### 1. Clone or open the repository
-
-Run the following commands from the submission repository root:
+### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
-cd sarthakaleriyaa
+git clone https://github.com/sarthakaleriyaa/Software-Engineering-Assessment.git
+cd Software-Engineering-Assessment/submissions/sarthakaleriyaa
 ```
 
-If you have already cloned the repository, simply open its root directory.
-
-### 2. Configure environment variables
-
-Copy the example environment file:
+### 2. Create environment configuration
 
 ```bash
 cp .env.example .env
@@ -234,125 +206,100 @@ On Windows PowerShell:
 Copy-Item .env.example .env
 ```
 
-Update the following values in `.env`:
+### 3. Configure environment variables
 
-- `POSTGRES_PASSWORD`: Set a secure database password.
-- `JWT_SECRET_KEY`: Use a strong random secret.
-- `AI_PROVIDER`: Set to `local` or `gemini`.
-- `GEMINI_API_KEY`: Required when using Gemini.
+Edit `.env` and configure:
 
-You can generate a JWT secret with:
+- `POSTGRES_PASSWORD`
+- `JWT_SECRET_KEY`
+- `AI_PROVIDER`
+- `GEMINI_API_KEY` (only when using Gemini)
+
+Generate a secure JWT secret:
 
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(48))"
 ```
 
-For offline usage:
+For offline development and testing, configure:
 
 ```env
 AI_PROVIDER=local
 ```
 
-For Gemini usage:
+For Gemini-powered answers, configure:
 
 ```env
 AI_PROVIDER=gemini
-GEMINI_API_KEY=your_gemini_api_key
+GEMINI_API_KEY=your_google_ai_studio_key
 ```
 
-Do not commit `.env` or expose API keys in source code.
+Never commit API keys or private credentials to GitHub.
 
-### 3. Start the application
-
-From the repository root:
+### 4. Start the application
 
 ```bash
 docker compose up --build
 ```
 
-The migration service runs first and exits after applying migrations. The API and worker then start.
-
-### 4. Open the application
+### 5. Access the application
 
 | Service | URL |
 |---|---|
 | Web Interface | http://localhost:8000/ |
 | API Documentation | http://localhost:8000/docs |
-| Health Check | http://localhost:8000/health |
+| Health Endpoint | http://localhost:8000/health |
 
-PostgreSQL is published on `127.0.0.1:5433` only.
+The migration service runs first and exits after applying database migrations. The API and background worker then start.
 
-To try the application, upload the sample documents from `evaluation/documents/` and ask:
+## Running Without Docker
 
-> How many days of paid annual leave do full-time employees get?
+Python 3.12+ is required.
 
-## Development Without Docker
-
-For development without running the complete Compose environment, start the database separately.
-
-### 1. Start PostgreSQL
-
-From the repository root:
+Start the database:
 
 ```bash
 docker compose up -d db
 ```
 
-### 2. Create a virtual environment
-
-Move into the backend directory:
+Create and activate a virtual environment:
 
 ```bash
 cd backend
-```
-
-Create the environment:
-
-```bash
 python -m venv .venv
 ```
 
-Activate it on Windows PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Activate it on Linux/macOS:
+Linux/macOS/WSL:
 
 ```bash
 source .venv/bin/activate
 ```
 
-Install development dependencies:
+Windows PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Install dependencies:
 
 ```bash
 pip install -r requirements-dev.txt
 ```
 
-### 3. Configure the database connection
-
-Set `DATABASE_URL` using the values from your `.env` file. It should point to the local database on port `5433`.
-
-### 4. Run migrations
-
-From `backend/`:
+Apply migrations:
 
 ```bash
 alembic upgrade head
 ```
 
-### 5. Start the API
-
-In one terminal:
+Start the API:
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-### 6. Start the worker
-
-In another terminal, activate the same virtual environment and run:
+Start the worker in another terminal:
 
 ```bash
 python -m app.worker
@@ -360,181 +307,109 @@ python -m app.worker
 
 ## Tests and Linting
 
-Run these commands from the `backend/` directory.
-
-### Run automated tests
+Run tests from the `backend/` directory:
 
 ```bash
 python -m pytest tests -q
 ```
 
-No API keys are required. Tests use controlled provider behaviour and do not rely on the developer's `.env` file.
-
-The frontend tests import the real `api.js` and `ui-logic.js` modules in Node.js (`tests/js/frontend_unit.mjs`). They run only when Node.js is installed; otherwise, they are skipped.
-
-### End-to-end check
-
-`scripts/e2e_check.py` drives a running deployment over HTTP. It registers a new test account, uploads a real 3-page PDF, waits for processing, checks a page-2 citation and an honest refusal, then deletes the document and confirms it is gone. It never touches existing data.
+Run lint checks:
 
 ```bash
-python scripts/e2e_check.py --base-url http://127.0.0.1:8000
+ruff check .
+ruff check ../evaluation --config ruff.toml
 ```
 
-### Run Ruff
-
-```bash
-ruff check . && ruff check ../evaluation --config ruff.toml
-```
-
-### PostgreSQL and pgvector integration tests
-
-The Postgres integration tests run when `TEST_DATABASE_URL` points to a disposable test database.
-
-**Warning:** The integration tests drop and recreate the test database schema. Never point `TEST_DATABASE_URL` at a database containing important data.
-
-Start a disposable pgvector database:
-
-```bash
-docker run -d --name documind-test-db -e POSTGRES_USER=test -e POSTGRES_PASSWORD=test -e POSTGRES_DB=test -p 127.0.0.1:56543:5432 pgvector/pgvector:pg17
-```
-
-On Linux/macOS:
-
-```bash
-TEST_DATABASE_URL=postgresql+psycopg://test:test@127.0.0.1:56543/test python -m pytest tests -q
-```
-
-On Windows PowerShell:
-
-```powershell
-$env:TEST_DATABASE_URL = "postgresql+psycopg://test:test@127.0.0.1:56543/test"
-python -m pytest tests -q
-```
-
-## Troubleshooting
-
-| Symptom | Possible Fix |
-|---|---|
-| `Set POSTGRES_PASSWORD in .env` | Create `.env` from `.env.example` and configure the database password. |
-| `Set JWT_SECRET_KEY in .env` | Configure a strong JWT secret in `.env`. |
-| `port is already allocated` | Change `API_PORT` or `DB_PORT` in `.env`. |
-| Documents remain `queued` | Check whether the worker is running using `docker compose logs worker`. |
-| Worker shows `unhealthy` | Check the worker logs and database connectivity. |
-| Document stays queued after a provider outage | Retry backoff is expected. The default retry intervals start at 30 seconds and increase. |
-| Embedding service unavailable | Check the Gemini API key, provider availability and retry attempts. Use `AI_PROVIDER=local` for offline development. |
-| Document fails with `No extractable text found` | The PDF may be scanned or image-only. OCR is not supported. |
-| Alembic migration fails on an old manually created database | Back up any required data before resetting the development database. `docker compose down -v` deletes volumes and database data. |
-
-## Deployment
-
-**Status: not deployed yet.** Everything needed is in the repository; creating the hosting account is the remaining manual step.
-
-### Render (free plan)
-
-[`render.yaml`](render.yaml) is a Render Blueprint for one free web service plus a free PostgreSQL 17 database (pgvector is supported). It is built around the free-plan limits (Render docs, checked 2026-10-30):
-
-| Free-plan limit | How DocuMind handles it |
-|---|---|
-| No free background workers | The ingestion worker runs inside the web service (`RUN_EMBEDDED_WORKER=true`). Same queue, retries and heartbeats |
-| Ephemeral filesystem | Uploaded files are stored in PostgreSQL (`document_blobs`), not on disk |
-| No pre-deploy command | Migrations run at start (`RUN_MIGRATIONS_ON_START=true`); the server does not start if they fail |
-| Sleeps after 15 minutes idle | First request after idle takes about a minute to wake the service |
-| Free database expires after 30 days, no backups | Upgrade the database plan, or redeploy, to keep the app live longer |
-
-Steps:
-
-1. Push the repository to your GitHub fork (done for the current branch).
-2. Sign in at [render.com](https://render.com) with GitHub and allow access to the fork.
-3. **New → Blueprint**, choose the fork, select the branch, and set the **Blueprint path** to `submissions/sarthakaleriyaa/render.yaml`.
-4. When prompted, paste your `GEMINI_API_KEY` into Render (it is stored by Render, never in the repository). `JWT_SECRET_KEY` is generated automatically. To run without Gemini, change `AI_PROVIDER` to `local` in the service's environment settings.
-5. Apply the Blueprint. Wait for the deploy to finish, then open `https://<service>.onrender.com/health`.
-6. Verify the deployment end to end:
-
-   ```bash
-   python scripts/e2e_check.py --base-url https://<service>.onrender.com --ready-timeout 300
-   ```
-
-The same container image has been verified locally in this single-service configuration: one container, embedded worker, migrations on start, a `postgres://` database URL, and documents still available after the container was destroyed and recreated.
-
-### Other hosts
-
-Any Docker host works. Run the `backend/` image as the web service, either with `RUN_EMBEDDED_WORKER=true` or with a second service running `python -m app.worker`. Use PostgreSQL 13+ with pgvector, and run `alembic upgrade head` before starting (or set `RUN_MIGRATIONS_ON_START=true`).
+The PostgreSQL and pgvector integration tests require `TEST_DATABASE_URL` to point to a disposable test database. These tests recreate their schema, so never point them at a database containing data you need to preserve.
 
 ## Evaluation Summary
 
-The evaluation dataset contains 24 questions across 5 original documents:
+The evaluation dataset contains 24 questions across five original documents:
 
-- 16 answerable questions
-- 8 unanswerable questions
-- 2 prompt-injection attack cases
+- 16 answerable questions.
+- 8 unanswerable questions, including two prompt-injection attacks.
 
-The reported baseline metrics below were generated using the offline `local` provider and `evaluation/run_eval.py`.
+The reported baseline metrics below come from the offline `local` provider.
 
-| Metric | Baseline (1,000-character chunks) |
+| Metric | Baseline |
 |---|---:|
 | Retrieval hit rate | 1.000 |
 | Answer correctness | 0.938 |
 | Correct refusal rate | 0.875 |
 | Injection payload leaks | 0 / 24 |
 
-### Chunking Experiment
+An experiment with 400-character chunks showed no measurable improvement over the 1,000-character default.
 
-The evaluation compared the default 1,000-character chunks against 400-character chunks.
+A few manual Gemini checks have been performed, but the complete scripted Gemini evaluation has not been completed. These local evaluation metrics should not be interpreted as live Gemini evaluation results.
 
-The experiment showed no measurable improvement from the smaller chunk size, so the default remains 1,000 characters with 150 characters of overlap.
+See [EVALUATION.md](EVALUATION.md) for methodology, experiments and detailed results.
 
-A false refusal involving hotel limits led to adjusting the offline retrieval gate from 0.90 to 0.95.
+## Deployment
 
-These results are limited to the recorded offline evaluation runs. They should not be interpreted as proof of production performance or Gemini answer quality.
+The application is deployed on Render.
 
-See [`EVALUATION.md`](EVALUATION.md) for the dataset, metrics, experiment details and limitations.
+- **Live URL:** https://documind-1m6x.onrender.com
+- **Health endpoint:** https://documind-1m6x.onrender.com/health
+- **API documentation:** https://documind-1m6x.onrender.com/docs
+- **Deployment branch:** `feature/project-architecture`
 
-## Feature Status
+The deployment uses a Render web service and managed PostgreSQL database.
+
+### Deployment Notes
+
+The current deployment is intended for assessment demonstration and testing.
+
+The Render free tier may spin down the web service after inactivity, which can result in a cold start when accessing the application again. Free database availability and retention are also subject to Render's current free-tier limits.
+
+For production use, configure suitable persistent storage, backups, monitoring and an appropriate paid hosting plan.
+
+## Current Feature Status
 
 | Requirement | Status |
 |---|---|
-| A1 — Authentication, password hashing, JWT and per-user isolation | Done and tested, including cross-user tests on real PostgreSQL |
-| A2 — PDF/TXT/MD upload, background worker, document statuses and deletion | Done and tested |
-| A3 — Question answering, selected-document filtering, citations, usage and history | Done and tested |
-| A4 — Rate limiting, provider error handling, health checks and request-ID logging | Done and tested |
-| A5 — Minimal web UI and OpenAPI documentation | Implemented and tested locally; not deployed publicly |
-| B1–B3 — Retrieval, grounding, refusal and prompt-injection defences | Core logic tested with local provider and mocked LLM; full live Gemini quality and injection evaluation pending |
-| B4 — Evaluation dataset, script, experiment and documentation | Completed for the local provider; scripted Gemini evaluation pending |
-| C1 — Dockerfile and Docker Compose | Implemented; previously verified on a clean volume |
-| C2 — GitHub Actions CI workflow | Passing on GitHub ([run 41012013155](https://github.com/sarthakaleriyaa/Software-Engineering-Assesment/actions/runs/41012013155), commit `ed79b66`): lint, 140 tests, evaluation, Docker build |
-| C3 — Public deployment | Not done |
-| D2 — GitHub issues and pull requests | Not done |
-| D4 — `v1.0.0` tag and release | Not done |
-| E2 — Demo video, screenshots and reviewer credentials | Not done |
+| User authentication, password hashing and JWT | Completed |
+| Per-user data isolation | Implemented and tested |
+| PDF, TXT and Markdown upload | Implemented |
+| Background document processing | Implemented |
+| Document processing statuses | Implemented |
+| Document selection and retrieval | Implemented |
+| RAG-based question answering | Implemented |
+| Source citations | Implemented |
+| Question history and usage information | Implemented |
+| Rate limiting and provider failure handling | Implemented |
+| Health checks and structured logging | Implemented |
+| Responsive web interface | Implemented |
+| OpenAPI documentation | Implemented |
+| Docker Compose setup | Implemented |
+| GitHub Actions CI workflow | Successfully executed |
+| Public HTTPS deployment | Completed |
+| Demo video | Recorded and shared |
+| GitHub issues | Not yet created |
+| Pull requests | Not yet created |
+| `v1.0.0` release and tag | Not yet created |
+| Full scripted Gemini evaluation | Pending |
 
-For the detailed submission checklist, see [`docs/SUBMISSION_CHECKLIST.md`](docs/SUBMISSION_CHECKLIST.md).
+## Known Limitations
 
-## Known Limitations and Future Improvements
+- **OCR:** Scanned or image-only PDFs are not supported. Documents need extractable text.
+- **Document storage:** The current architecture uses a shared uploads volume. For larger deployments, object storage such as S3 or GCS would be preferable.
+- **Background processing:** The worker polls PostgreSQL periodically. A dedicated message broker or notification mechanism may be preferable at higher scale.
+- **Rate limiting:** The current implementation uses database-backed question counts. A distributed token-bucket implementation could be more suitable under heavy concurrency.
+- **Retrieval:** Current retrieval uses vector similarity with a fixed threshold. Hybrid BM25 and vector search with a reranker could improve retrieval quality.
+- **Prompt injection:** Multiple defensive layers are implemented, but prompt-injection detection remains heuristic and cannot guarantee detection of every possible attack.
+- **Conversation memory:** Multi-turn conversational memory and streaming responses are not currently implemented.
+- **PDF extraction:** Table-aware extraction is not currently supported.
 
-- **File storage in PostgreSQL:** Uploads (up to 10 MB each) are stored in the database so they survive redeploys on hosts with ephemeral disks. For much larger files or volumes, object storage (S3, GCS) would be more economical.
-- **Polling worker:** The worker polls the PostgreSQL queue every 2 seconds. `LISTEN/NOTIFY` or a dedicated message broker could improve queue efficiency at higher volumes.
-- **Rate limiting:** The current implementation counts question-history records. A token bucket or Redis-based limiter would provide more precise behaviour under heavy concurrency.
-- **No OCR:** Scanned PDFs and image-only documents are not supported.
-- **No table-aware extraction:** Complex tables may not be represented accurately by basic PDF text extraction.
-- **Vector-only retrieval:** Hybrid BM25 and vector search, followed by re-ranking, could improve retrieval quality.
-- **Prompt-injection defence:** Current protections are layered heuristics, not a guarantee against every possible attack.
-- **Single-turn questions:** Conversation memory and streaming responses are not currently implemented.
+## Documentation
 
-## Future Scope
-
-Potential improvements include:
-
-1. Public HTTPS deployment and production monitoring.
-2. Object storage for very large documents.
-3. Hybrid keyword and vector retrieval.
-4. Re-ranking retrieved passages.
-5. OCR support for scanned PDFs.
-6. Improved evaluation with a larger dataset and scripted Gemini runs.
-7. Conversation memory and streaming responses.
-8. More extensive browser-based end-to-end testing.
+- [DESIGN.md](DESIGN.md) — System architecture, requirements, API contract and technical decisions.
+- [EVALUATION.md](EVALUATION.md) — Evaluation dataset, methodology, results and experiments.
+- [AI_USAGE.md](AI_USAGE.md) — AI tools and usage disclosure.
+- [FINAL_AUDIT.md](FINAL_AUDIT.md) — Requirement audit and implementation review.
 
 ---
 
-**DocuMind — AI Knowledge Assistant**
-
-Built with FastAPI, PostgreSQL, pgvector and Gemini, with an offline provider for development and evaluation.
+**Project:** DocuMind — AI Knowledge Assistant  
+**Implementation branch:** `feature/project-architecture`  
+**Latest verified commit:** `5814dca`  
+**Live deployment:** [documind-1m6x.onrender.com](https://documind-1m6x.onrender.com)
