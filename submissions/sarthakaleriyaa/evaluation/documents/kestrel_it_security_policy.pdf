@@ -1,0 +1,54 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R 7 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 9 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 577 >>
+stream
+BT /F1 11 Tf 14 TL 60 740 Td (KESTREL LABS - IT SECURITY POLICY) Tj T* (Fictional policy written for the DocuMind evaluation set. Free to share.) Tj T* () Tj T* (1. Scope) Tj T* (This policy applies to every laptop, phone and cloud account used for Kestrel Labs) Tj T* (work, including personal devices that access company email.) Tj T* () Tj T* (2. Device security) Tj T* (Company laptops must use full-disk encryption and lock automatically after 5 minutes) Tj T* (of inactivity. Operating system security updates must be installed within 7 days of) Tj T* (release.) Tj T* ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 6 0 R /Resources << /Font << /F1 9 0 R >> >> >>
+endobj
+6 0 obj
+<< /Length 658 >>
+stream
+BT /F1 11 Tf 14 TL 60 740 Td (3. Passwords and authentication) Tj T* (Passwords must be at least 14 characters long. Password reuse across services is not) Tj T* (allowed, and every employee must use the company password manager. Multi-factor) Tj T* (authentication is mandatory for email, source code hosting and the HR portal.) Tj T* (Hardware security keys are issued to administrators.) Tj T* () Tj T* (4. Reporting incidents) Tj T* (Suspected security incidents, including lost devices and phishing emails, must be) Tj T* (reported to security@kestrel.example within 1 hour of discovery. Do not try to) Tj T* (investigate an incident yourself.) Tj T* ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 8 0 R /Resources << /Font << /F1 9 0 R >> >> >>
+endobj
+8 0 obj
+<< /Length 470 >>
+stream
+BT /F1 11 Tf 14 TL 60 740 Td (5. Data classification) Tj T* (Data is classified as Public, Internal, Confidential or Restricted. Restricted data,) Tj T* (such as customer payment details, may only be stored in approved systems and must) Tj T* (never be sent by email.) Tj T* () Tj T* (6. Access reviews) Tj T* (Managers review their team's access rights every 90 days. Accounts of employees who) Tj T* (leave the company are disabled on their last working day.) Tj T* ET
+endstream
+endobj
+9 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000127 00000 n 
+0000000253 00000 n 
+0000000881 00000 n 
+0000001007 00000 n 
+0000001716 00000 n 
+0000001842 00000 n 
+0000002363 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+2433
+%%EOF
