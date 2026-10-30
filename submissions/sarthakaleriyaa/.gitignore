@@ -1,0 +1,18 @@
+.venv/
+**/.venv/
+.venv-*/
+**/.venv-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+
+# Runtime uploads from local development
+backend/storage/
+
+# Local database backups (never commit)
+backups/
+*.dump

@@ -1,0 +1,88 @@
+# docker compose up --build
+# Starts PostgreSQL + pgvector, runs migrations, then the API and the ingestion worker.
+# Configuration comes from .env (copy .env.example). No secrets are stored in this file.
+
+x-backend: &backend
+  build: ./backend
+  image: documind-backend:local
+  environment:
+    DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-documind}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-documind}
+    JWT_SECRET_KEY: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY in .env}
+    ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+    AI_PROVIDER: ${AI_PROVIDER:-gemini}
+    GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    GEMINI_GENERATION_MODEL: ${GEMINI_GENERATION_MODEL:-gemini-3.5-flash-lite}
+    GEMINI_EMBEDDING_MODEL: ${GEMINI_EMBEDDING_MODEL:-gemini-embedding-001}
+    GEMINI_THINKING_LEVEL: ${GEMINI_THINKING_LEVEL:-LOW}
+    GEMINI_TIMEOUT_MS: ${GEMINI_TIMEOUT_MS:-15000}
+    GEMINI_RETRY_ATTEMPTS: ${GEMINI_RETRY_ATTEMPTS:-2}
+    GEMINI_INPUT_USD_PER_MTOK: ${GEMINI_INPUT_USD_PER_MTOK:-}
+    GEMINI_OUTPUT_USD_PER_MTOK: ${GEMINI_OUTPUT_USD_PER_MTOK:-}
+    RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-10}
+    MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-10}
+    LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    WORKER_POLL_SECONDS: ${WORKER_POLL_SECONDS:-2}
+    WORKER_RETRY_BASE_SECONDS: ${WORKER_RETRY_BASE_SECONDS:-30}
+    WORKER_HEARTBEAT_STALE_SECONDS: ${WORKER_HEARTBEAT_STALE_SECONDS:-60}
+  volumes:
+    - uploads:/data/uploads
+  restart: unless-stopped
+
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-documind}
+      POSTGRES_USER: ${POSTGRES_USER:-documind}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      # Published on localhost only, for local tools and running the API outside Docker.
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-documind} -d ${POSTGRES_DB:-documind}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  migrate:
+    <<: *backend
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    <<: *backend
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  worker:
+    <<: *backend
+    command: ["python", "-m", "app.worker"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      # Healthy while the heartbeat thread keeps reaching the database (file touched < 60 s ago).
+      test: ["CMD", "python", "-c", "import os, sys, time; sys.exit(0 if time.time() - os.path.getmtime('/tmp/documind-worker-heartbeat') < 60 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  postgres_data:
+  uploads:

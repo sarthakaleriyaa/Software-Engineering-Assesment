@@ -1,0 +1,14 @@
+target-version = "py312"
+line-length = 100
+extend-exclude = [".venv", ".venv-local", "migrations/versions"]
+
+[lint]
+# pyflakes, pycodestyle errors, import sorting, bugbear (likely bugs)
+select = ["F", "E", "I", "B"]
+ignore = [
+    "B008", # FastAPI's Depends()/File() in defaults is the intended pattern
+    "E501", # long lines are left to the formatter's judgement
+]
+
+[lint.isort]
+known-first-party = ["app", "tests"]
