@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>DocuMind</title>
+<link rel="stylesheet" href="/static/css/app.css">
+<script type="module" src="/static/js/app.js"></script>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" hidden>
+  <symbol id="i-logo" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.7 10.7 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8.5 8 9 4.6-.5 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M7 7h4v4H8a3 3 0 0 0 3 3v2a5 5 0 0 1-5-5zM14 7h4v4h-3a3 3 0 0 0 3 3v2a5 5 0 0 1-5-5z"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="m4 12 16-8-6 16-2-6z"/><path d="m12 14 8-10"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5"/><path d="M5 12h11"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></symbol>
+</svg>
+
+<!-- ============ Sign in / sign up ============ -->
+<main id="view-auth" class="auth-layout" hidden>
+  <section class="auth-aside" aria-hidden="true">
+    <div class="brand">
+      <div class="brand-mark"><svg class="icon"><use href="#i-logo"/></svg></div>
+      <div><div class="brand-name">Docu<span>Mind</span></div><div class="brand-tag">Grounded AI knowledge assistant</div></div>
+    </div>
+    <div>
+      <h1>Answers from <span>your documents</span>, with the sources to prove it.</h1>
+      <p>Upload policies, manuals and guides. Ask in plain language. Every answer cites the exact passage, and DocuMind says so when the documents don't contain the answer.</p>
+      <ul class="feature-list">
+        <li><svg class="icon"><use href="#i-quote"/></svg><div><strong>Cited answers</strong>Document name, passage and page number for every claim.</div></li>
+        <li><svg class="icon"><use href="#i-shield"/></svg><div><strong>Private by default</strong>Each account sees only its own documents and history.</div></li>
+        <li><svg class="icon"><use href="#i-bolt"/></svg><div><strong>Background processing</strong>Uploads return immediately; a worker indexes them.</div></li>
+      </ul>
+    </div>
+    <div class="auth-foot">PDF, Markdown and plain-text documents.</div>
+  </section>
+
+  <section class="auth-main">
+    <div class="auth-card">
+      <div class="auth-tabs" role="tablist" aria-label="Account">
+        <button class="auth-tab" role="tab" id="tab-signin" aria-selected="true" aria-controls="form-signin" type="button">Sign in</button>
+        <button class="auth-tab" role="tab" id="tab-signup" aria-selected="false" aria-controls="form-signup" type="button">Create account</button>
+      </div>
+
+      <form id="form-signin" class="auth-form" role="tabpanel" aria-labelledby="tab-signin" novalidate>
+        <div><h2>Welcome back</h2><p class="sub">Sign in to your knowledge base.</p></div>
+        <div id="signin-error" class="form-error" role="alert" hidden></div>
+        <div id="signin-success" class="form-success" role="status" hidden></div>
+        <div class="field">
+          <label for="signin-email">Email</label>
+          <div class="input-wrap"><svg class="icon"><use href="#i-mail"/></svg>
+            <input class="input" id="signin-email" type="email" autocomplete="username" required aria-describedby="signin-email-error"></div>
+          <div class="field-error" id="signin-email-error"></div>
+        </div>
+        <div class="field">
+          <label for="signin-password">Password</label>
+          <div class="input-wrap"><svg class="icon"><use href="#i-lock"/></svg>
+            <input class="input" id="signin-password" type="password" autocomplete="current-password" required aria-describedby="signin-password-error">
+            <button class="btn btn-ghost btn-icon input-toggle" type="button" data-toggle-password="signin-password" aria-label="Show password" aria-pressed="false"><svg class="icon"><use href="#i-eye"/></svg></button></div>
+          <div class="field-error" id="signin-password-error"></div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" id="signin-submit">Sign in</button>
+      </form>
+
+      <form id="form-signup" class="auth-form" role="tabpanel" aria-labelledby="tab-signup" novalidate hidden>
+        <div><h2>Create your account</h2><p class="sub">Your documents stay private to this account.</p></div>
+        <div id="signup-error" class="form-error" role="alert" hidden></div>
+        <div class="field">
+          <label for="signup-email">Email</label>
+          <div class="input-wrap"><svg class="icon"><use href="#i-mail"/></svg>
+            <input class="input" id="signup-email" type="email" autocomplete="email" required aria-describedby="signup-email-error"></div>
+          <div class="field-error" id="signup-email-error"></div>
+        </div>
+        <div class="field">
+          <label for="signup-password">Password</label>
+          <div class="input-wrap"><svg class="icon"><use href="#i-lock"/></svg>
+            <input class="input" id="signup-password" type="password" autocomplete="new-password" required aria-describedby="signup-password-hint signup-password-error">
+            <button class="btn btn-ghost btn-icon input-toggle" type="button" data-toggle-password="signup-password" aria-label="Show password" aria-pressed="false"><svg class="icon"><use href="#i-eye"/></svg></button></div>
+          <div class="field-hint" id="signup-password-hint">At least 8 characters.</div>
+          <div class="field-error" id="signup-password-error"></div>
+        </div>
+        <div class="field">
+          <label for="signup-confirm">Confirm password</label>
+          <div class="input-wrap"><svg class="icon"><use href="#i-lock"/></svg>
+            <input class="input" id="signup-confirm" type="password" autocomplete="new-password" required aria-describedby="signup-confirm-error"></div>
+          <div class="field-error" id="signup-confirm-error"></div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" id="signup-submit">Create account</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- ============ Dashboard ============ -->
+<div id="view-app" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"><svg class="icon"><use href="#i-logo"/></svg></div>
+      <div><div class="brand-name">Docu<span>Mind</span></div><div class="brand-tag">Grounded knowledge assistant</div></div>
+    </div>
+    <div class="topbar-right">
+      <button class="health-pill" id="health-pill" type="button" data-state="unknown" aria-describedby="health-detail">
+        <span class="dot" aria-hidden="true"></span><span class="health-label" id="health-label">Checking status…</span>
+      </button>
+      <span class="sr-only" id="health-detail" role="status"></span>
+      <div class="user-chip">
+        <div class="avatar" id="user-avatar" aria-hidden="true">?</div>
+        <span class="user-email" id="user-email"></span>
+        <button class="btn btn-ghost btn-icon" id="logout" type="button" aria-label="Sign out" title="Sign out"><svg class="icon"><use href="#i-logout"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- Knowledge base -->
+    <section class="panel" aria-labelledby="kb-title">
+      <div class="panel-head">
+        <div><h2 class="panel-title" id="kb-title"><svg class="icon"><use href="#i-db"/></svg>Knowledge base</h2><p class="panel-sub" id="kb-sub">Your documents</p></div>
+        <button class="btn btn-ghost btn-icon" id="refresh-docs" type="button" aria-label="Refresh documents" title="Refresh"><svg class="icon"><use href="#i-refresh"/></svg></button>
+      </div>
+      <div class="panel-body">
+        <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-describedby="dropzone-hint">
+          <svg class="icon icon-lg"><use href="#i-upload"/></svg>
+          <strong>Drop files here or click to upload</strong>
+          <small id="dropzone-hint">PDF, Markdown or plain text · up to 10 MB each</small>
+        </div>
+        <input type="file" id="file-input" accept=".pdf,.md,.txt" multiple hidden aria-label="Choose documents to upload">
+        <ul class="upload-list" id="upload-list" aria-live="polite"></ul>
+
+        <div class="toolbar">
+          <label class="check"><input type="checkbox" id="select-all"> <span>Select all ready</span></label>
+          <span class="count-badge" id="selected-count" aria-live="polite"></span>
+        </div>
+        <div id="docs-loading" class="doc-list" aria-hidden="true"><div class="skeleton"></div><div class="skeleton"></div></div>
+        <ul class="doc-list" id="doc-list" aria-label="Documents"></ul>
+        <div class="empty" id="docs-empty" hidden>
+          <svg class="icon icon-lg"><use href="#i-file"/></svg>
+          <strong>No documents yet</strong>
+          <span>Upload a policy, manual or guide to start asking questions.</span>
+        </div>
+        <div class="notice" id="docs-error" role="status" hidden></div>
+      </div>
+    </section>
+
+    <!-- Grounded Q&A console -->
+    <section class="panel console" aria-labelledby="qa-title">
+      <div class="panel-head">
+        <div><h2 class="panel-title" id="qa-title"><svg class="icon"><use href="#i-chat"/></svg>Grounded Q&amp;A</h2>
+          <p class="panel-sub">Answers use only your documents, with citations.</p></div>
+        <div class="tabs" role="tablist" aria-label="Console view">
+          <button class="tab" role="tab" id="tab-chat" aria-selected="true" aria-controls="pane-chat" type="button">Conversation</button>
+          <button class="tab" role="tab" id="tab-history" aria-selected="false" aria-controls="pane-history" type="button">History</button>
+        </div>
+      </div>
+
+      <div id="pane-chat" role="tabpanel" aria-labelledby="tab-chat">
+        <div class="thread" id="thread" aria-live="polite">
+          <div class="welcome" id="welcome">
+            <div class="brand-mark"><svg class="icon icon-lg"><use href="#i-search"/></svg></div>
+            <h3>Ask your documents</h3>
+            <p id="welcome-text">Upload a document, wait until it is ready, then ask a question.</p>
+            <div class="suggestions" id="suggestions"></div>
+          </div>
+        </div>
+        <form class="composer" id="ask-form" novalidate>
+          <div class="composer-foot"><span class="scope"><svg class="icon"><use href="#i-search"/></svg><span id="scope-label">No ready documents yet</span></span></div>
+          <div class="composer-box">
+            <label class="sr-only" for="question">Your question</label>
+            <textarea id="question" rows="1" maxlength="4000" placeholder="Ask a question about your documents…"></textarea>
+            <button class="btn btn-primary btn-icon" id="ask-submit" type="submit" aria-label="Ask"><svg class="icon"><use href="#i-send"/></svg></button>
+          </div>
+          <div class="composer-foot"><span>Each question is answered independently from your documents.</span><span>Enter to send · Shift+Enter for a new line</span></div>
+        </form>
+      </div>
+
+      <div id="pane-history" role="tabpanel" aria-labelledby="tab-history" hidden>
+        <ul class="history-list" id="history-list" aria-label="Question history"></ul>
+        <div class="empty" id="history-empty" hidden><svg class="icon icon-lg"><use href="#i-history"/></svg><strong>No questions yet</strong></div>
+        <div class="notice" id="history-error" role="status" hidden></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="confirm-dialog" aria-labelledby="confirm-title">
+  <div class="dialog-body"><h3 id="confirm-title">Delete document?</h3><p id="confirm-text"></p></div>
+  <div class="dialog-actions">
+    <button class="btn" type="button" id="confirm-cancel">Cancel</button>
+    <button class="btn btn-danger-solid" type="button" id="confirm-ok">Delete</button>
+  </div>
+</dialog>
+<div class="toast-region" id="toasts" aria-live="polite"></div>
+</body>
+</html>
